@@ -13,7 +13,7 @@ import Main
         , Order(..)
         , infinity
         , monster2ViewModel
-        , oder2HeaderViewModel
+        , order2HeaderViewModel
         )
 import Test exposing (..)
 
@@ -22,13 +22,13 @@ type alias TestCase =
     String
 
 
-oder2HeaderViewModelTest : TestCase -> Order -> HeaderViewModel -> Test
-oder2HeaderViewModelTest testCase order headerViewModel =
+order2HeaderViewModelTest : TestCase -> Order -> HeaderViewModel -> Test
+order2HeaderViewModelTest testCase order headerViewModel =
     test testCase <|
         \_ ->
             let
                 actual =
-                    oder2HeaderViewModel order
+                    order2HeaderViewModel order
 
                 expected =
                     headerViewModel
@@ -75,7 +75,7 @@ suite =
                 \_ ->
                     let
                         actual =
-                            oder2HeaderViewModel DefaultOrder
+                            order2HeaderViewModel DefaultOrder
 
                         expected =
                             HeaderViewModel
@@ -85,7 +85,7 @@ suite =
                                 (HeaderFieldViewModel "" "asc")
                     in
                     Expect.equal actual expected
-            , oder2HeaderViewModelTest
+            , order2HeaderViewModelTest
                 "HPが昇順のとき、HPの項目のみが明るくなっていて、矢印は、すべて上を向いている"
                 (Order Hp Asc)
                 (HeaderViewModel
@@ -94,7 +94,7 @@ suite =
                     (HeaderFieldViewModel "" "asc")
                     (HeaderFieldViewModel "" "asc")
                 )
-            , oder2HeaderViewModelTest
+            , order2HeaderViewModelTest
                 "MPが昇順のとき、MPの項目のみが明るくなっていて、矢印は、すべて上を向いている"
                 (Order Mp Asc)
                 (HeaderViewModel
@@ -103,7 +103,7 @@ suite =
                     (HeaderFieldViewModel "" "asc")
                     (HeaderFieldViewModel "" "asc")
                 )
-            , oder2HeaderViewModelTest
+            , order2HeaderViewModelTest
                 "Attackが昇順のとき、Attackの項目のみが明るくなっていて、矢印は、すべて上を向いている"
                 (Order Attack Asc)
                 (HeaderViewModel
@@ -112,7 +112,7 @@ suite =
                     (HeaderFieldViewModel "active" "asc")
                     (HeaderFieldViewModel "" "asc")
                 )
-            , oder2HeaderViewModelTest
+            , order2HeaderViewModelTest
                 "Agilityが昇順のとき、Agilityの項目のみが明るくなっていて、矢印は、すべて上を向いている"
                 (Order Agility Asc)
                 (HeaderViewModel

@@ -10,7 +10,7 @@ module Main exposing
     , Order(..)
     , infinity
     , monster2ViewModel
-    , oder2HeaderViewModel
+    , order2HeaderViewModel
     , update
     )
 
@@ -138,8 +138,8 @@ defaultOrderHeaderViewModel =
         (HeaderFieldViewModel "" "asc")
 
 
-oder2HeaderViewModel : Order -> HeaderViewModel
-oder2HeaderViewModel order =
+order2HeaderViewModel : Order -> HeaderViewModel
+order2HeaderViewModel order =
     case order of
         DefaultOrder ->
             defaultOrderHeaderViewModel
