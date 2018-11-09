@@ -8,6 +8,7 @@ module Main exposing
     , MonsterViewModel
     , Msg(..)
     , Order(..)
+    , changeOrder
     , infinity
     , monster2ViewModel
     , order2HeaderViewModel
@@ -54,6 +55,23 @@ init _ =
       }
     , Cmd.none
     )
+
+
+changeOrder : By -> Order -> Order
+changeOrder targetBy order =
+    case order of
+        DefaultOrder ->
+            Order targetBy Asc
+
+        Order by dir ->
+            if by /= targetBy then
+                Order targetBy Asc
+
+            else if by == targetBy && dir == Dsc then
+                DefaultOrder
+
+            else
+                Order by Dsc
 
 
 
@@ -145,25 +163,36 @@ order2HeaderViewModel order =
             defaultOrderHeaderViewModel
 
         Order by dir ->
+            let
+                dirText =
+                    case dir of
+                        Asc ->
+                            "asc"
+
+                        Dsc ->
+                            "dsc"
+            in
             case by of
                 Hp ->
                     { defaultOrderHeaderViewModel
-                        | hp = HeaderFieldViewModel "active" "asc"
+                        | hp =
+                            HeaderFieldViewModel "active" dirText
                     }
 
                 Mp ->
                     { defaultOrderHeaderViewModel
-                        | mp = HeaderFieldViewModel "active" "asc"
+                        | mp =
+                            HeaderFieldViewModel "active" dirText
                     }
 
                 Attack ->
                     { defaultOrderHeaderViewModel
-                        | attack = HeaderFieldViewModel "active" "asc"
+                        | attack = HeaderFieldViewModel "active" dirText
                     }
 
                 Agility ->
                     { defaultOrderHeaderViewModel
-                        | agility = HeaderFieldViewModel "active" "asc"
+                        | agility = HeaderFieldViewModel "active" dirText
                     }
 
 
@@ -198,7 +227,7 @@ monster2ViewModel { name, hp, mp, attack, agility } =
             String.fromInt hp
 
         mpText =
-            if infinity == mp then
+            if isInfinite mp then
                 "∞"
 
             else

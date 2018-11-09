@@ -11,6 +11,7 @@ import Main
         , Monster
         , MonsterViewModel
         , Order(..)
+        , changeOrder
         , infinity
         , monster2ViewModel
         , order2HeaderViewModel
@@ -95,11 +96,29 @@ suite =
                     (HeaderFieldViewModel "" "asc")
                 )
             , order2HeaderViewModelTest
+                "HPが降順のとき、HPの項目のみが明るくなっていて、HPの矢印は上を向いていて、HP以外の矢印は上を向いている"
+                (Order Hp Dsc)
+                (HeaderViewModel
+                    (HeaderFieldViewModel "active" "dsc")
+                    (HeaderFieldViewModel "" "asc")
+                    (HeaderFieldViewModel "" "asc")
+                    (HeaderFieldViewModel "" "asc")
+                )
+            , order2HeaderViewModelTest
                 "MPが昇順のとき、MPの項目のみが明るくなっていて、矢印は、すべて上を向いている"
                 (Order Mp Asc)
                 (HeaderViewModel
                     (HeaderFieldViewModel "" "asc")
                     (HeaderFieldViewModel "active" "asc")
+                    (HeaderFieldViewModel "" "asc")
+                    (HeaderFieldViewModel "" "asc")
+                )
+            , order2HeaderViewModelTest
+                "MPが降順のとき、MPの項目のみが明るくなっていて、MPの矢印は上を向いていて、MP以外の矢印は上を向いている"
+                (Order Mp Dsc)
+                (HeaderViewModel
+                    (HeaderFieldViewModel "" "asc")
+                    (HeaderFieldViewModel "active" "dsc")
                     (HeaderFieldViewModel "" "asc")
                     (HeaderFieldViewModel "" "asc")
                 )
@@ -121,5 +140,65 @@ suite =
                     (HeaderFieldViewModel "" "asc")
                     (HeaderFieldViewModel "active" "asc")
                 )
+            , test "HPが与えられたら、デフォルトの並びのとき、HPが昇順になる。" <|
+                \_ ->
+                    let
+                        actual =
+                            DefaultOrder |> changeOrder Hp
+
+                        expected =
+                            Order Hp Asc
+                    in
+                    Expect.equal actual expected
+            , test "HPが与えられたら、HPが昇順のとき、HPが降順になる。" <|
+                \_ ->
+                    let
+                        actual =
+                            Order Hp Asc |> changeOrder Hp
+
+                        expected =
+                            Order Hp Dsc
+                    in
+                    Expect.equal actual expected
+            , test "MPが与えられたら、HPが昇順のとき、MPが昇順になる。" <|
+                \_ ->
+                    let
+                        actual =
+                            Order Hp Asc |> changeOrder Mp
+
+                        expected =
+                            Order Mp Asc
+                    in
+                    Expect.equal actual expected
+            , test "HPが与えられたら、HPが降順のとき、デフォルトの並びになる。" <|
+                \_ ->
+                    let
+                        actual =
+                            Order Hp Dsc |> changeOrder Hp
+
+                        expected =
+                            DefaultOrder
+                    in
+                    Expect.equal actual expected
+            , test "Mpが与えられたら、Mpが昇順のとき、Mpが降順になる。" <|
+                \_ ->
+                    let
+                        actual =
+                            Order Mp Asc |> changeOrder Mp
+
+                        expected =
+                            Order Mp Dsc
+                    in
+                    Expect.equal actual expected
+            , test "Attackが与えられたら、Agilityが降順のとき、Attackが昇順になる。" <|
+                \_ ->
+                    let
+                        actual =
+                            Order Agility Dsc |> changeOrder Attack
+
+                        expected =
+                            Order Attack Asc
+                    in
+                    Expect.equal actual expected
             ]
         ]
